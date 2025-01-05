@@ -34,6 +34,8 @@ module.exports.registerUser = async (req, res, next) => {
     console.log("Time to generate jwt");
     // generate jwt
     const token = user.generateJWT();
+    res.cookie("token", token);
+
     res.status(200).json({
       user,
       token,
@@ -68,5 +70,10 @@ module.exports.loginUser = async (req, res, next) => {
   }
 
   const token = user.generateJWT();
+  res.cookie("token", token);
   res.status(200).json({ user, token });
+};
+
+module.exports.getUserProfile = async (req, res, next) => {
+  res.status(200).json(req.user);
 };
