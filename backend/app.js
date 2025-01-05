@@ -8,5 +8,10 @@ const app = express();
 const cors = require("cors");
 
 app.use(cors());
+app.use(express.json());
+// Routers
 
+const userrouter = require("./routes/userRoutes.js");
+
+app.use("/api", userrouter);
 module.exports = app;
