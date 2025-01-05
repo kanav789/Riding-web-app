@@ -1,4 +1,3 @@
-
 # Backend API Documentation
 
 ## User Registration API Documentation
@@ -111,15 +110,97 @@ curl -X POST \
 - A JWT token is generated and returned upon successful registration
 - The password field is excluded from the response
 - All requests must include `Content-Type: application/json` header
-````
 
-Changes made:
-1. Added HTTP method specification
-2. Added Content-Type headers
-3. Added detailed HTTP request example
-4. Added CURL example for API testing
-5. Added more specific HTTP status codes
-6. Improved formatting for better readability
-7. Added headers information in the documentation
+#### 2. Login User
+Authenticate an existing user and receive a JWT token.
+
+**HTTP Method**: `POST`  
+**Endpoint**: `/api/login`  
+**Content-Type**: `application/json`
+
+### Request Body
+```json
+{
+  "email": "string",
+  "password": "string"
+}
+```
+
+### Validation Rules
+- **email**: Must be a valid email address
+- **password**: Minimum 6 characters
+
+### Example Request
+```http
+POST /api/login HTTP/1.1
+Host: your-api-domain.com
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
+
+### Success Response
+**HTTP Status**: `200 OK`  
+**Content-Type**: `application/json`
+```json
+{
+  "user": {
+    "_id": "user_id",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com"
+  },
+  "token": "JWT_TOKEN"
+}
+```
+
+### Error Responses
+
+#### Invalid Credentials
+**HTTP Status**: `401 Unauthorized`  
+**Content-Type**: `application/json`
+```json
+{
+  "message": "Invalid email or password"
+}
+```
+
+#### Validation Error
+**HTTP Status**: `400 Bad Request`  
+**Content-Type**: `application/json`
+```json
+{
+  "errors": [
+    {
+      "msg": "Invalid Email",
+      "param": "email",
+      "location": "body"
+    }
+  ]
+}
+```
+
+### CURL Example
+```bash
+curl -X POST \
+  http://your-api-domain.com/api/login \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "email": "john.doe@example.com",
+    "password": "password123"
+  }'
+```
+
+### Notes
+- Password is compared with hashed version in database
+- JWT token is generated upon successful authentication
+- The password field is never returned in the response
+- All requests must include `Content-Type: application/json` header
+```
 
 

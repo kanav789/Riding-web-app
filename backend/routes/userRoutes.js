@@ -16,4 +16,14 @@ router.post(
   ],
   userControllers.registerUser
 );
+
+
+router.post(
+  "/login",
+  [body("email").isEmail().withMessage("Invalid Email")],
+  body("password")
+    .isLength({ min: 6 })
+    .withMessage("Password must be atleat 8 character"),
+  userControllers.loginUser
+);
 module.exports = router;
