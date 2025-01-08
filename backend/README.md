@@ -201,6 +201,107 @@ curl -X POST \
 - JWT token is generated upon successful authentication
 - The password field is never returned in the response
 - All requests must include `Content-Type: application/json` header
+
+#### 3. Get User Profile
+Get the authenticated user's profile information.
+
+**HTTP Method**: `GET`  
+**Endpoint**: `/api/profile`  
+**Authentication**: Required (JWT Token)
+
+### Headers
+```http
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### Success Response
+**HTTP Status**: `200 OK`  
+**Content-Type**: `application/json`
+```json
+{
+  "_id": "user_id",
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com"
+}
+```
+
+### Error Response
+**HTTP Status**: `401 Unauthorized`  
+**Content-Type**: `application/json`
+```json
+{
+  "message": "Authentication required"
+}
+```
+
+### CURL Example
+```bash
+curl -X GET \
+  http://your-api-domain.com/api/profile \
+  -H 'Authorization: Bearer YOUR_JWT_TOKEN'
+```
+
+### Notes
+- Requires valid JWT token in Authorization header
+- Password field is excluded from response
+- Token must not be blacklisted
+
+#### 4. Logout User
+Logout the currently authenticated user and invalidate their token.
+
+**HTTP Method**: `GET`  
+**Endpoint**: `/api/logout`  
+**Authentication**: Required (JWT Token)
+
+### Headers
+```http
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### Success Response
+**HTTP Status**: `200 OK`  
+**Content-Type**: `application/json`
+```json
+{
+  "message": "Logout successful"
+}
+```
+
+### Error Responses
+
+#### No Token Provided
+**HTTP Status**: `401 Unauthorized`  
+**Content-Type**: `application/json`
+```json
+{
+  "message": "Authentication required"
+}
+```
+
+#### Invalid Token
+**HTTP Status**: `401 Unauthorized`  
+**Content-Type**: `application/json`
+```json
+{
+  "message": "Invalid token"
+}
+```
+
+### CURL Example
+```bash
+curl -X GET \
+  http://your-api-domain.com/api/logout \
+  -H 'Authorization: Bearer YOUR_JWT_TOKEN'
+```
+
+### Notes
+- Requires valid JWT token in Authorization header
+- Clears the token cookie if present
+- Adds the token to blacklist to prevent reuse
+- Token expires from blacklist after 24 hours automatically
 ```
 
 
