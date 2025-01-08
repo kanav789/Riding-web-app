@@ -13,6 +13,8 @@ app.use(cookieParser());
 // Routers
 
 const userrouter = require("./routes/userRoutes.js");
+const captainrouter = require("./routes/captainroutes.js");
 
 app.use("/api", userrouter);
+app.use("/api/captain", captainrouter);
 module.exports = app;

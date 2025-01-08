@@ -302,6 +302,141 @@ curl -X GET \
 - Clears the token cookie if present
 - Adds the token to blacklist to prevent reuse
 - Token expires from blacklist after 24 hours automatically
+
+## Captain Registration API Documentation
+
+### API Endpoints
+
+#### Register Captain
+Register a new captain in the system.
+
+**HTTP Method**: `POST`  
+**Endpoint**: `/api/captain/register`  
+**Content-Type**: `application/json`
+
+### Request Body
+```json
+{
+  "fullname": {
+    "firstname": "string",
+    "lastname": "string"
+  },
+  "email": "string",
+  "password": "string",
+  "vehicle": {
+    "color": "string",
+    "model": "string",
+    "capacity": "number",
+    "vehicleType": "string"
+  }
+}
+```
+
+### Validation Rules
+- **email**: Must be a valid email address
+- **fullname.firstname**: Minimum 3 characters
+- **password**: Minimum 8 characters
+- **vehicle.color**: Minimum 3 characters
+- **vehicle.model**: Minimum 3 characters
+- **vehicle.capacity**: Must be an integer greater than or equal to 1
+- **vehicle.vehicleType**: Must be one of: "car", "bike", "auto"
+
+### Example Request
+```http
+POST /api/captain/register HTTP/1.1
+Host: your-api-domain.com
+Content-Type: application/json
+
+{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Smith"
+  },
+  "email": "john.smith@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "black",
+    "model": "Toyota Camry",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+### Success Response
+**HTTP Status**: `200 OK`  
+**Content-Type**: `application/json`
+```json
+{
+  "captain": {
+    "_id": "captain_id",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Smith"
+    },
+    "email": "john.smith@example.com",
+    "vehicle": {
+      "color": "black",
+      "model": "Toyota Camry",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+}
+```
+
+### Error Responses
+
+#### Validation Error
+**HTTP Status**: `400 Bad Request`  
+**Content-Type**: `application/json`
+```json
+{
+  "errors": [
+    {
+      "msg": "Invalid Email",
+      "param": "email",
+      "location": "body"
+    }
+  ]
+}
+```
+
+#### Required Fields Missing
+**HTTP Status**: `400 Bad Request`  
+**Content-Type**: `application/json`
+```json
+{
+  "error": "All fields are required"
+}
+```
+
+### CURL Example
+```bash
+curl -X POST \
+  http://your-api-domain.com/api/captain/register \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Smith"
+    },
+    "email": "john.smith@example.com",
+    "password": "password123",
+    "vehicle": {
+      "color": "black",
+      "model": "Toyota Camry",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }'
+```
+
+### Notes
+- Password is hashed before storing in the database
+- The password field is excluded from the response
+- All requests must include `Content-Type: application/json` header
+- Vehicle type must be one of the predefined types: car, bike, or auto
 ```
 
 
