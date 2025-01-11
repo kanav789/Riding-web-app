@@ -437,6 +437,214 @@ curl -X POST \
 - The password field is excluded from the response
 - All requests must include `Content-Type: application/json` header
 - Vehicle type must be one of the predefined types: car, bike, or auto
+
+#### 2. Login Captain
+Authenticate an existing captain and receive a JWT token.
+
+**HTTP Method**: `POST`  
+**Endpoint**: `/api/captain/login`  
+**Content-Type**: `application/json`
+
+### Request Body
+```json
+{
+  "email": "string",
+  "password": "string"
+}
+```
+
+### Validation Rules
+- **email**: Must be a valid email address
+- **password**: Minimum 8 characters
+
+### Example Request
+```http
+POST /api/captain/login HTTP/1.1
+Host: your-api-domain.com
+Content-Type: application/json
+
+{
+  "email": "john.smith@example.com",
+  "password": "password123"
+}
+```
+
+### Success Response
+**HTTP Status**: `200 OK`  
+**Content-Type**: `application/json`
+```json
+{
+  "message": "Login successful",
+  "captain": {
+    "_id": "captain_id",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Smith"
+    },
+    "email": "john.smith@example.com",
+    "vehicle": {
+      "color": "black",
+      "model": "Toyota Camry",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  },
+  "token": "JWT_TOKEN"
+}
+```
+
+### Error Responses
+
+#### Invalid Credentials
+**HTTP Status**: `400 Bad Request`  
+**Content-Type**: `application/json`
+```json
+{
+  "message": "Invalid email or password"
+}
+```
+
+#### Validation Error
+**HTTP Status**: `400 Bad Request`  
+**Content-Type**: `application/json`
+```json
+{
+  "errors": [
+    {
+      "msg": "Invalid Email",
+      "param": "email",
+      "location": "body"
+    }
+  ]
+}
+```
+
+### CURL Example
+```bash
+curl -X POST \
+  http://your-api-domain.com/api/captain/login \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "email": "john.smith@example.com",
+    "password": "password123"
+  }'
+```
+
+### Notes
+- Password is compared with hashed version in database
+- JWT token is generated upon successful authentication
+- The password field is never returned in the response
+- All requests must include `Content-Type: application/json` header
+
+#### 3. Get Captain Profile
+Get the authenticated captain's profile information.
+
+**HTTP Method**: `GET`  
+**Endpoint**: `/api/captain/profile`  
+**Authentication**: Required (JWT Token)
+
+### Headers
+```http
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### Success Response
+**HTTP Status**: `200 OK`  
+**Content-Type**: `application/json`
+```json
+{
+  "message": "Captain profile fetched successfully",
+  "captain": {
+    "_id": "captain_id",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Smith"
+    },
+    "email": "john.smith@example.com",
+    "vehicle": {
+      "color": "black",
+      "model": "Toyota Camry",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+}
+```
+
+### Error Response
+**HTTP Status**: `401 Unauthorized`  
+**Content-Type**: `application/json`
+```json
+{
+  "message": "Authentication required"
+}
+```
+
+### CURL Example
+```bash
+curl -X GET \
+  http://your-api-domain.com/api/captain/profile \
+  -H 'Authorization: Bearer YOUR_JWT_TOKEN'
+```
+
+### Notes
+- Requires valid JWT token in Authorization header
+- Password field is excluded from response
+- Token must not be blacklisted
+
+#### 4. Logout Captain
+Logout the currently authenticated captain and invalidate their token.
+
+**HTTP Method**: `GET`  
+**Endpoint**: `/api/captain/logout`  
+**Authentication**: Required (JWT Token)
+
+### Headers
+```http
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### Success Response
+**HTTP Status**: `200 OK`  
+**Content-Type**: `application/json`
+```json
+{
+  "message": "Captain logged out successfully"
+}
+```
+
+### Error Responses
+
+#### No Token Provided
+**HTTP Status**: `401 Unauthorized`  
+**Content-Type**: `application/json`
+```json
+{
+  "message": "Authentication required"
+}
+```
+
+#### Invalid Token
+**HTTP Status**: `401 Unauthorized`  
+**Content-Type**: `application/json`
+```json
+{
+  "message": "Invalid token"
+}
+```
+
+### CURL Example
+```bash
+curl -X GET \
+  http://your-api-domain.com/api/captain/logout \
+  -H 'Authorization: Bearer YOUR_JWT_TOKEN'
+```
+
+### Notes
+- Requires valid JWT token in Authorization header
+- Clears the token cookie if present
+- Adds the token to blacklist to prevent reuse
+- Token expires from blacklist after 24 hours automatically
 ```
 
 
