@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { USerDataContext } from "../context/UserContext";
+import axios from "axios";
 
 function UserSignup() {
   const [firstname, setFirstname] = useState("");
@@ -7,28 +9,45 @@ function UserSignup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [Data, setData] = useState({});
-  const SubmitHAndler = (e) => {
+  const navigate = useNavigate();
+
+  const { user, setUser } = useContext(USerDataContext);
+  const SubmitHAndler = async (e) => {
     e.preventDefault();
 
-    const formData = {
-      fullName: {
-        firstname,
-        lastname,
-      },
+    try {
+      const formData = {
+        fullname: {
+          firstname,
+          lastname,
+        },
 
-      email,
-      password,
-    };
+        email,
+        password,
+      };
 
-    setData(formData);
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASEURL}/api/register`,
+        formData
+      );
+      if (response.status === 200) {
+        const data = response.data;
+        setUser(data.user);
+        console.log("user login successfully");
+        navigate("/home");
+      } else {
+        console.log(response.data.msg, "error");
+      }
 
-    console.log(formData, "Data aa raha hai");
-    setFirstname("");
-    setLastname("");
-    setEmail("");
-    setPassword("");
+      setFirstname("");
+      setLastname("");
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <div className="p-7 h-screen flex flex-col justify-between">
       <div>
