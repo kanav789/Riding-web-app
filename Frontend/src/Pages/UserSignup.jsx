@@ -33,7 +33,6 @@ function UserSignup() {
       if (response.status === 200) {
         const data = response.data;
         setUser(data.user);
-        localStorage.setItem("token", data.token);
         console.log("user login successfully");
         navigate("/home");
       } else {
