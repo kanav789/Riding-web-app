@@ -48,7 +48,6 @@ module.exports.loginCaptain = async (req, res) => {
     }
 
     const { email, password } = req.body;
-    console.log(email, password);
 
     const captain = await captainModel.findOne({ email }).select("+password");
     if (!captain) {
@@ -62,6 +61,7 @@ module.exports.loginCaptain = async (req, res) => {
 
     const token = await captain.generateToken();
     res.cookie("token", token);
+    console.log("login sucees");
     return res
       .status(200)
       .json({ message: "Login successful", token, captain });
