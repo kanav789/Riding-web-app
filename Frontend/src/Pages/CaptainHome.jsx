@@ -12,7 +12,7 @@ function CaptainHome() {
         />
         <Link
           to="/home"
-          className="fixed right-4 top-2 bg-white flex items-center justify-center rounded-full h-7 w-7  cursor-pointer"
+          className=" bg-white flex items-center justify-center rounded-full h-7 w-7  cursor-pointer"
         >
           <i className="text-gray-400 rounded-lg ri-logout-box-r-line"></i>
         </Link>
