@@ -6,7 +6,6 @@ import LoactionSearchPanel from "../Components/LoactionSearchPanel";
 import VehiclePanel from "../Components/VehiclePanel";
 import ConfirmedVehicle from "../Components/ConfirmedVehicle";
 import LookingForDriver from "../Components/LookingForDriver";
-import WaitingForDriver from "../Components/WaitingForDriver";
 function Home() {
   const [pickup, setPickup] = useState();
 
@@ -21,8 +20,6 @@ function Home() {
   const [confirmRide, setConfirmRide] = useState(false);
   const LookingForDriverRef = useRef(null);
   const [isLookingForDriver, setIsLookingForDriver] = useState(false);
-  const [isWaitingForDriver, setIsWaitingForDriver] = useState(false);
-  const WaitingForDriverRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -96,21 +93,6 @@ function Home() {
       }
     },
     [isLookingForDriver]
-  );
-  // waiting for driver
-  useGSAP(
-    function () {
-      if (isWaitingForDriver) {
-        gsap.to(WaitingForDriverRef.current, {
-          transform: "translateY(0%)",
-        });
-      } else {
-        gsap.to(WaitingForDriverRef.current, {
-          transform: "translateY(100%)",
-        });
-      }
-    },
-    [isWaitingForDriver]
   );
 
   return (
@@ -189,19 +171,12 @@ function Home() {
           setConfirmRide={setConfirmRide}
         />
       </div>
-      {/* Looking for Driver */}
+      {/* Waiting for Driver to confirm the ride */}
       <div
         ref={LookingForDriverRef}
         className="fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6 pt-12"
       >
         <LookingForDriver setIsLookingForDriver={setIsLookingForDriver} />
-      </div>
-      {/* Waiting for Driver to confirm the ride */}
-      <div
-        ref={WaitingForDriverRef}
-        className="fixed w-full z-10   bg-white bottom-0 px-3 py-6 pt-12"
-      >
-        <WaitingForDriver setIsWaitingForDriver={setIsWaitingForDriver} />
       </div>
     </div>
   );
