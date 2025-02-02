@@ -1,12 +1,12 @@
 import React from "react";
 
-function RidePopup(props) {
+function ConfirmRidePopUp(props) {
   return (
     <div>
       <div
         className="absolute right-3 cursor-pointer"
         onClick={() => {
-          props.setRidePopUpPanel(false);
+          props.setConfirmRidePopUpPanel(false);
         }}
       >
         {" "}
@@ -56,23 +56,22 @@ function RidePopup(props) {
         <button
           className="w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded-lg "
           onClick={() => {
-            props.setConfirmRidePopUpPanel(true);
-            props.setRidePopUpPanel(false);
+            props.setConfirmRidePopUpPanel(false);
           }}
         >
-          Accept
+          Confirm
         </button>
         <button
-          className="w-full mt-1 bg-gray-400 text-white font-semibold p-2 rounded-lg "
+          className="w-full mt-1 bg-red-400 text-white font-semibold p-2 rounded-lg "
           onClick={() => {
-            props.setRidePopUpPanel(false);
+            props.setConfirmRidePopUpPanel(false);
           }}
         >
-          Ignore
+          Cancel
         </button>
       </div>
     </div>
   );
 }
 
-export default RidePopup;
+export default ConfirmRidePopUp;
