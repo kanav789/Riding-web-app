@@ -928,3 +928,63 @@ curl -X POST \
 - Requires valid JWT token in Authorization header
 - Pickup and destination must be valid strings with a minimum of 3 characters
 - Vehicle type must be one of the predefined types: auto, motorcycle, or car
+
+### 4.2 Get Fares
+
+Retrieves fare estimates for a given pickup and destination.
+
+**HTTP Method:** GET  
+**Endpoint:** /api/ride/fares  
+**Authentication:** Required (JWT Token)
+
+#### Query Parameters
+- pickup (string, minimum 3 characters): The pickup location.
+- destination (string, minimum 3 characters): The destination location.
+
+#### Headers
+Authorization: Bearer <JWT_TOKEN>
+
+#### Success Response
+HTTP Status: 200 OK  
+Content-Type: application/json  
+```json
+{
+  "auto": 123.45,
+  "car": 234.56,
+  "motorcycle": 78.9
+}
+```
+
+#### Error Responses
+
+1. Validation Error  
+   HTTP Status: 400 Bad Request  
+   ```json
+   {
+     "errors": [
+       {
+         "msg": "Invalid Pickup",
+         "param": "pickup",
+         "location": "query"
+       }
+     ]
+   }
+   ```
+2. Authentication Error  
+   HTTP Status: 401 Unauthorized  
+   ```json
+   {
+     "message": "Authentication required"
+   }
+   ```
+
+#### Example Request
+```bash
+curl -X GET \
+  'http://your-api-domain.com/api/ride/fares?pickup=1600+Parkway&destination=22+Baker+Street' \
+  -H 'Authorization: Bearer YOUR_JWT_TOKEN'
+```
+
+### Notes
+- Requires valid JWT token in Authorization header.
+- Pickup/destination strings must each have at least 3 characters.

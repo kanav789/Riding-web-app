@@ -28,8 +28,8 @@ module.exports.getsFares = async (req, res) => {
     return res.status(400).json({errors: errors.array()});
   }
   try {
-    const {pickup, destination} = req.query;
-    const fare= await rideService.getFare(query);
+    console.log(req.query, "get fares");
+    const fare = await rideService.getFare(req.query);
     return res.status(200).json(fare);
   } catch (error) {
     res.status(400).json({ error: error.message });
