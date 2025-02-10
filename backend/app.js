@@ -14,7 +14,13 @@ app.use(cookieParser());
 
 const userrouter = require("./routes/userRoutes.js");
 const captainrouter = require("./routes/captainroutes.js");
+const maprouter = require("./routes/maproutes.js");
+const rideroutes = require("./routes/rideroutes.js");
 
 app.use("/api", userrouter);
 app.use("/api/captain", captainrouter);
+app.use("/api/map", maprouter);
+app.use("/api/ride", rideroutes);
+
+
 module.exports = app;
