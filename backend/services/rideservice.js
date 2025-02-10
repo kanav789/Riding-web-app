@@ -54,6 +54,7 @@ async function getFare(pickup, destination) {
   console.log(fare, "fare");
   return fare;
 }
+module.exports.getFare = getFare;
 
 function getOtp(num) {
   function generateOtp(num) {
