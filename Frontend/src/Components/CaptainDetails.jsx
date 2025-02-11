@@ -1,6 +1,8 @@
 import React from "react";
 
-function CaptainDetails() {
+function CaptainDetails(props) {
+  const { fullname, email, status, vehicle } = props.profile;
+ const { firstname, lastname } = fullname;
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -10,7 +12,7 @@ function CaptainDetails() {
             src="https://imgs.search.brave.com/zoqBg0aHx0F5FcJ3IWHTV-hbUpQeDoMFfcL-VTgeiBI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzgyL2Vh/LzQyLzgyZWE0MmEy/ZGZiMDdlODZjYjhj/NTkyYmViMjI4MTI1/LmpwZw"
             alt=""
           />
-          <h4>Kanav Kumar</h4>
+          <h4 className="text-xl capitalize">{firstname} {lastname}</h4>
         </div>
         <div className="flex flex-col justify-center  items-start p-5">
           <h4 className="text-xl font-semibold">$295.2</h4>

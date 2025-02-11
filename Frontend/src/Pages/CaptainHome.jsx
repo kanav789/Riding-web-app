@@ -1,16 +1,39 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import CaptainDetails from "../Components/CaptainDetails";
 import RidePopup from "../Components/RidePopup";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ConfirmRidePopUp from "../Components/ConfirmRidePopUp";
+import axios from "axios";
 
 function CaptainHome() {
   const [ridePopUpPanel, setRidePopUpPanel] = useState(true);
   const ridePopUpPanelRef = useRef(null);
   const [confirmRidePopUpPanel, setConfirmRidePopUpPanel] = useState(false);
   const confirmridePopUpPanelRef = useRef(null);
+  const [captainProfile, setCaptainProfile] = useState(null);
+
+  useEffect(() => {
+    async function fetchCaptainProfile() {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASEURL}/api/captain/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setCaptainProfile(response.data.captain);
+        console.log(response.data.captain);
+      } catch (error) {
+        console.error("Error fetching captain profile:", error);
+      }
+    }
+
+    fetchCaptainProfile();
+  }, []);
 
   useGSAP(
     function () {
@@ -26,6 +49,7 @@ function CaptainHome() {
     },
     [ridePopUpPanel]
   );
+
   useGSAP(
     function () {
       if (confirmRidePopUpPanel) {
@@ -46,8 +70,7 @@ function CaptainHome() {
       <div className="fixed  p-6 top-0  flex  items-center justify-between w-screen">
         <img
           className="w-16"
-          src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png
-"
+          src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
           alt=""
         />
         <Link
@@ -67,7 +90,11 @@ function CaptainHome() {
       </div>
 
       <div className="h-2/5 p-6">
-        <CaptainDetails />
+        {captainProfile ? (
+          <CaptainDetails profile={captainProfile} />
+        ) : (
+          <p>Loading...</p>
+        )}
       </div>
       {/* ridePopup */}
       <div
