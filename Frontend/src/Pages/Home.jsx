@@ -6,20 +6,26 @@ import LoactionSearchPanel from "../Components/LoactionSearchPanel";
 import VehiclePanel from "../Components/VehiclePanel";
 import ConfirmedVehicle from "../Components/ConfirmedVehicle";
 import LookingForDriver from "../Components/LookingForDriver";
-function Home() {
-  const [pickup, setPickup] = useState();
+import axios from "axios";
 
-  const [destination, setDestination] = useState();
+function Home() {
+  const [pickup, setPickup] = useState("");
+  const [destination, setDestination] = useState("");
   const [panelopen, setPanelopen] = useState(false);
   const panelref = useRef(null);
   const panelCloseref = useRef(null);
   const vehiclePanelRef = useRef(null);
   const confirmRiderRef = useRef(null);
+  const [activeField, setActiveField] = useState(null);
 
   const [vehiclepanel, setVehiclepanel] = useState(false);
   const [confirmRide, setConfirmRide] = useState(false);
   const LookingForDriverRef = useRef(null);
   const [isLookingForDriver, setIsLookingForDriver] = useState(false);
+
+  const [fare, setFare] = useState({});
+
+  const [vehicleType, setVehicleType] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -95,6 +101,51 @@ function Home() {
     [isLookingForDriver]
   );
 
+  async function findTrip() {
+    setVehiclepanel(true);
+    setPanelopen(false);
+
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASEURL}/api/ride/fares`, {
+          params: { pickup, destination },
+          headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+      });
+
+      setFare(response.data);
+     
+
+
+      console.log(fare,"fare")
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+  // create ride
+async function createRide() {
+ await axios.post(`${import.meta.env.VITE_BASEURL}/api/ride/create`, {
+    pickup,
+    destination,
+    vehicleType,
+  }, {
+    headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  }).then((response) => {
+    console.log(response.data);
+    setIsLookingForDriver(true);
+    setVehiclepanel(false);
+  }).catch((error) => {
+    console.log(error);
+  });
+
+
+ }
+
   return (
     <div className="h-screen w-screen overflow-hidden relative ">
       <img
@@ -125,7 +176,10 @@ function Home() {
               className="bg-[#eee] px-12 py-2 text-base rounded-lg"
               value={pickup}
               onChange={(e) => setPickup(e.target.value)}
-              onClick={() => setPanelopen(true)}
+              onClick={() => {
+                setPanelopen(true);
+                setActiveField("pickup");
+              }}
               type="text"
               placeholder=" Add a Pickup location"
             />
@@ -133,16 +187,31 @@ function Home() {
               className="bg-[#eee] px-12 py-2 text-base rounded-lg"
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
-              onClick={() => setPanelopen(!panelopen)}
+              onClick={() => {
+                setPanelopen(true);
+                setActiveField("destination");
+              }}
               type="text"
               placeholder="Enter Your Destination"
             />
           </form>
+          <button
+            onClick={() => findTrip()}
+            className="bg-black w-full flex justify-center rounded-lg text-white py-2 mt-1 mb-10"
+          >
+            Find Trip
+          </button>
+    
         </div>
 
         {/* location panel */}
         <div className="h-0 bg-white " ref={panelref}>
           <LoactionSearchPanel
+            pickup={pickup}
+            setPickup={setPickup}
+            destination={destination}
+            setDestination={setDestination}
+            activeField={activeField}
             setPanelopen={setPanelopen}
             setVehiclepanel={setVehiclepanel}
           />
@@ -151,10 +220,14 @@ function Home() {
 
       {/* vehicle panel  */}
       <div
+   
         ref={vehiclePanelRef}
+        
         className="fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6"
       >
         <VehiclePanel
+           selectVehicle={setVehicleType}
+        fare={fare}
           setConfirmRide={setConfirmRide}
           setVehiclepanel={setVehiclepanel}
         />
@@ -167,6 +240,11 @@ function Home() {
         className="fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6 pt-12"
       >
         <ConfirmedVehicle
+        pickup={pickup}
+        destination={destination}
+        fare={fare}
+        createRide={createRide}
+        vehicleType={vehicleType}
           setIsLookingForDriver={setIsLookingForDriver}
           setConfirmRide={setConfirmRide}
         />
@@ -176,7 +254,13 @@ function Home() {
         ref={LookingForDriverRef}
         className="fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6 pt-12"
       >
-        <LookingForDriver setIsLookingForDriver={setIsLookingForDriver} />
+        <LookingForDriver 
+          pickup={pickup}
+          destination={destination}
+          fare={fare}
+          createRide={createRide}
+          vehicleType={vehicleType}
+        setIsLookingForDriver={setIsLookingForDriver} />
       </div>
     </div>
   );
