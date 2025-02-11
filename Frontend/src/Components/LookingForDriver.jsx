@@ -25,7 +25,7 @@ function LookingForDriver(props) {
             <div>
               <h3 className="text-lg font-medium ">562/11-A</h3>
               <p className="text-[14px] text-gray-600 mt-[-2px]">
-                Kankhirya Talab, Ahembdabad
+                {props.pickup}
               </p>
             </div>
           </div>
@@ -34,14 +34,14 @@ function LookingForDriver(props) {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-[14px] text-gray-600 mt-[-2px]">
-                Kankhirya Talab, Ahembdabad
+                {props.destination}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-5 p-3  ">
             <i className="ri-currency-fill"></i>
             <div>
-              <h3 className="text-lg font-medium">₹183.00</h3>
+              <h3 className="text-lg font-medium">₹{props.fare[props.vehicleType]}</h3>
               <p className="text-[14px] text-gray-600 mt-[-2px]">Cash </p>
             </div>
           </div>
