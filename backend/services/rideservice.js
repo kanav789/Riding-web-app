@@ -4,6 +4,7 @@ const mapsService = require("./mapsservice.js");
 const crypto = require("crypto");
 
 async function getFare(pickup, destination) {
+
   if (!pickup || !destination) {
     throw new Error("Pickup and destination are required");
   }
