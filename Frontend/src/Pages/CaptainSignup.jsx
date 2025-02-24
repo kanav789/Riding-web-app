@@ -36,7 +36,9 @@ function CaptainSignup() {
         `${import.meta.env.VITE_BASEURL}/api/captain/register`,
         formData
       );
-      localStorage.setItem("token", response.data.token);
+      const data = response.data;
+
+      localStorage.setItem("captainprofile", JSON.stringify(data));
 
       setFirstname("");
       setLastname("");

@@ -24,7 +24,10 @@ function CaptainLogin() {
       setEmail("");
       setPassword("");
       console.log(response.data);
-      localStorage.setItem("token", response.data.token);
+
+      const data = response.data;
+
+      localStorage.setItem("captainprofile", JSON.stringify(data));
       navigate("/");
     } catch (error) {
       console.log(error);

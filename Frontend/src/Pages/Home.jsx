@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
@@ -7,6 +7,8 @@ import VehiclePanel from "../Components/VehiclePanel";
 import ConfirmedVehicle from "../Components/ConfirmedVehicle";
 import LookingForDriver from "../Components/LookingForDriver";
 import axios from "axios";
+import { useSocket } from "../context/SocketContext";
+import { use } from "react";
 
 function Home() {
   const [pickup, setPickup] = useState("");
@@ -26,6 +28,12 @@ function Home() {
   const [fare, setFare] = useState({});
 
   const [vehicleType, setVehicleType] = useState("");
+
+  const { sendmessage, recievemessage } = useSocket(useSocket);
+
+  useEffect(() => {
+    sendmessage("join", { userType: "user" });
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -107,44 +115,48 @@ function Home() {
 
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_BASEURL}/api/ride/fares`, {
+        `${import.meta.env.VITE_BASEURL}/api/ride/fares`,
+        {
           params: { pickup, destination },
           headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-      });
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       setFare(response.data);
-     
 
-
-      console.log(fare,"fare")
+      console.log(fare, "fare");
     } catch (error) {
       console.log(error);
     }
   }
 
-
   // create ride
-async function createRide() {
- await axios.post(`${import.meta.env.VITE_BASEURL}/api/ride/create`, {
-    pickup,
-    destination,
-    vehicleType,
-  }, {
-    headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-    }
-  }).then((response) => {
-    console.log(response.data);
-    setIsLookingForDriver(true);
-    setVehiclepanel(false);
-  }).catch((error) => {
-    console.log(error);
-  });
-
-
- }
+  async function createRide() {
+    await axios
+      .post(
+        `${import.meta.env.VITE_BASEURL}/api/ride/create`,
+        {
+          pickup,
+          destination,
+          vehicleType,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setIsLookingForDriver(true);
+        setVehiclepanel(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   return (
     <div className="h-screen w-screen overflow-hidden relative ">
@@ -201,7 +213,6 @@ async function createRide() {
           >
             Find Trip
           </button>
-    
         </div>
 
         {/* location panel */}
@@ -220,14 +231,12 @@ async function createRide() {
 
       {/* vehicle panel  */}
       <div
-   
         ref={vehiclePanelRef}
-        
         className="fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6"
       >
         <VehiclePanel
-           selectVehicle={setVehicleType}
-        fare={fare}
+          selectVehicle={setVehicleType}
+          fare={fare}
           setConfirmRide={setConfirmRide}
           setVehiclepanel={setVehiclepanel}
         />
@@ -240,11 +249,11 @@ async function createRide() {
         className="fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6 pt-12"
       >
         <ConfirmedVehicle
-        pickup={pickup}
-        destination={destination}
-        fare={fare}
-        createRide={createRide}
-        vehicleType={vehicleType}
+          pickup={pickup}
+          destination={destination}
+          fare={fare}
+          createRide={createRide}
+          vehicleType={vehicleType}
           setIsLookingForDriver={setIsLookingForDriver}
           setConfirmRide={setConfirmRide}
         />
@@ -254,13 +263,14 @@ async function createRide() {
         ref={LookingForDriverRef}
         className="fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6 pt-12"
       >
-        <LookingForDriver 
+        <LookingForDriver
           pickup={pickup}
           destination={destination}
           fare={fare}
           createRide={createRide}
           vehicleType={vehicleType}
-        setIsLookingForDriver={setIsLookingForDriver} />
+          setIsLookingForDriver={setIsLookingForDriver}
+        />
       </div>
     </div>
   );
