@@ -4,11 +4,10 @@ import { useNavigate } from "react-router-dom";
 function UserProtectedRouters({ children }) {
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("token");
+  const userprofile = localStorage.getItem("userprofile");
 
   useEffect(() => {
-    if (!token) {
-      console.log(token);
+    if (!userprofile) {
       navigate("/user-login");
     }
   });

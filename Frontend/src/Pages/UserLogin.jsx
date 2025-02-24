@@ -1,13 +1,13 @@
 import { React, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { USerDataContext } from "../context/UserContext";
+// import { UserDataContext } from "../context/UserContext";
 import axios from "axios";
 
 function UserLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, setUser } = useContext(USerDataContext);
+
   const navigate = useNavigate();
   const SubmitHAndler = async (e) => {
     e.preventDefault();
@@ -26,8 +26,9 @@ function UserLogin() {
 
       if (response.status === 200) {
         const data = response.data;
-        setUser(data.user);
-        localStorage.setItem("token", data.token);
+
+        localStorage.setItem("userprofile", JSON.stringify(data));
+       
         console.log("user login successfully");
         navigate("/home");
       } else {

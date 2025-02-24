@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { USerDataContext } from "../context/UserContext";
+
 import axios from "axios";
 
 function UserSignup() {
@@ -11,7 +11,6 @@ function UserSignup() {
 
   const navigate = useNavigate();
 
-  const { user, setUser } = useContext(USerDataContext);
   const SubmitHAndler = async (e) => {
     e.preventDefault();
 
@@ -32,7 +31,8 @@ function UserSignup() {
       );
       if (response.status === 200) {
         const data = response.data;
-        setUser(data.user);
+        localStorage.setItem("userprofile", JSON.stringify(data));
+
         console.log("user login successfully");
         navigate("/home");
       } else {
