@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import UserLogin from "./Pages/UserLogin";
 import UserSignup from "./Pages/UserSignup";
@@ -14,11 +14,13 @@ import CaptainHome from "./Pages/CaptainHome";
 import CaptainProtectedWrapper from "./Pages/CaptainProtectedWrappers";
 import LiveRiding from "./Pages/LiveRiding";
 import CaptainRiding from "./Pages/CaptainRiding";
+import Errorcode from "./Pages/Errorcode";
 
 function App() {
   return (
     <>
       <Routes>
+        <Route path="*" element={<Errorcode />} />
         <Route path="/" element={<Start />} />
         <Route path="/user-login" element={<UserLogin />} />
         <Route path="/user-signup" element={<UserSignup />} />
@@ -35,7 +37,7 @@ function App() {
           }
         />
 
-        <Route path="/captainlgogout" element={<CaptainLogout />} />
+        <Route path="/captainlogout" element={<CaptainLogout />} />
         <Route
           path="/captainhome"
           element={
