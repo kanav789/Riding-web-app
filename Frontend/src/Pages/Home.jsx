@@ -7,8 +7,9 @@ import VehiclePanel from "../Components/VehiclePanel";
 import ConfirmedVehicle from "../Components/ConfirmedVehicle";
 import LookingForDriver from "../Components/LookingForDriver";
 import axios from "axios";
-import { useSocket } from "../context/SocketContext";
-import { use } from "react";
+import { SocketContext } from "../context/SocketContext";
+
+
 
 function Home() {
   const [pickup, setPickup] = useState("");
@@ -29,11 +30,17 @@ function Home() {
 
   const [vehicleType, setVehicleType] = useState("");
 
-  const { sendmessage, recievemessage } = useSocket(useSocket);
+  const { socket } = useContext(SocketContext);
 
+
+  const userStr = localStorage.getItem("userprofile");
+  const user = userStr ? JSON.parse(userStr): "user nahi hai bahi";
+console.log(user)
   useEffect(() => {
-    sendmessage("join", { userType: "user" });
-  });
+   
+      socket.emit("join", { userType: "user", userId: user.user._id });
+    
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
