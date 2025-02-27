@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useContext,useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import CaptainDetails from "../Components/CaptainDetails";
 import RidePopup from "../Components/RidePopup";
@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ConfirmRidePopUp from "../Components/ConfirmRidePopUp";
 import axios from "axios";
-
+import {SocketContext} from "../context/SocketContext"
 function CaptainHome() {
   const [ridePopUpPanel, setRidePopUpPanel] = useState(true);
   const ridePopUpPanelRef = useRef(null);
@@ -14,26 +14,56 @@ function CaptainHome() {
   const confirmridePopUpPanelRef = useRef(null);
   const [captainProfile, setCaptainProfile] = useState(null);
 
-  useEffect(() => {
-    async function fetchCaptainProfile() {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BASEURL}/api/captain/profile`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        setCaptainProfile(response.data.captain);
-        console.log(response.data.captain);
-      } catch (error) {
-        console.error("Error fetching captain profile:", error);
-      }
-    }
+  const {socket } =useContext(SocketContext);
+  const captainprofile = JSON.parse(localStorage.getItem("captainprofile"));
 
-    fetchCaptainProfile();
-  }, []);
+ useEffect(() => {    
+  socket.emit("join", {userId:captainprofile.captain._id,userType:"captain"});
+ 
+
+  // Geolocation.getCurrentPosition()
+   
+    
+ 
+ 
+   
+  const updateLocation = () => {
+    if (navigator.geolocation) {
+      
+        navigator.geolocation.getCurrentPosition(position => {
+          console.log(position);
+          console.log({
+            userId: captainprofile.captain._id,
+            location: {
+                ltd: position.coords.latitude,
+                lng: position.coords.longitude
+            }
+          });
+          socket.emit('update-location-captain', {
+            userId: captainprofile.captain._id,
+            location: {
+                ltd: position.coords.latitude,
+                lng: position.coords.longitude
+            }
+          });
+        });
+    } else {
+      console.log("Location not available");
+    }
+  };
+
+  const locationInterval = setInterval(updateLocation, 10000);
+  updateLocation();
+
+  // return () => clearInterval(locationInterval);
+ }, []);
+ 
+
+ socket.on("new-ride", (data) => {
+  console.log(data)
+
+ })
+
 
   useGSAP(
     function () {
