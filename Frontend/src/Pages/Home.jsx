@@ -9,6 +9,7 @@ import LookingForDriver from "../Components/LookingForDriver";
 import axios from "axios";
 import { SocketContext } from "../context/SocketContext";
 
+import WaitingForDriver from "../Components/WaitingForDriver";
 
 
 function Home() {
@@ -25,13 +26,15 @@ function Home() {
   const [confirmRide, setConfirmRide] = useState(false);
   const LookingForDriverRef = useRef(null);
   const [isLookingForDriver, setIsLookingForDriver] = useState(false);
+  const waitingForDriverRef = useRef(null)
+  const [ waitingForDriver, setWaitingForDriver ] = useState(false)
 
   const [fare, setFare] = useState({});
 
   const [vehicleType, setVehicleType] = useState("");
 
   const { socket } = useContext(SocketContext);
-
+ const [ride,setride]=useState(null)
 
   const userStr = localStorage.getItem("userprofile");
   const user = userStr ? JSON.parse(userStr): "user nahi hai bahi";
@@ -41,6 +44,15 @@ console.log(user)
       socket.emit("join", { userType: "user", userId: user.user._id });
     
   }, [user]);
+
+ 
+  socket.on("ride-confirmed",(data)=>{
+ 
+  setride(data)
+  console.log(data,"daaata")
+  setIsLookingForDriver(false)
+  setWaitingForDriver(true)
+  })
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -114,6 +126,35 @@ console.log(user)
       }
     },
     [isLookingForDriver]
+  );
+
+  // waiting for driver
+  useGSAP(
+    function () {
+      if (waitingForDriver) {
+        gsap.to(waitingForDriverRef.current, {
+          transform: "translateY(0%)",
+        });
+      } else {
+        gsap.to(waitingForDriverRef.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [waitingForDriver]
+  ); useGSAP(
+    function () { 
+      if (waitingForDriver) { 
+        gsap.to(waitingForDriverRef.current, {
+          transform: "translateY(0%)",
+        });
+      } else {
+        gsap.to(waitingForDriverRef.current, {
+          transform: "translateY(100%)",
+        });
+      } 
+    },
+    [waitingForDriver]
   );
 
   async function findTrip() {
@@ -277,6 +318,19 @@ console.log(user)
           createRide={createRide}
           vehicleType={vehicleType}
           setIsLookingForDriver={setIsLookingForDriver}
+        
+        />
+      </div>
+
+      <div
+        ref={waitingForDriverRef}
+        className="fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6 pt-12"
+      >
+        <WaitingForDriver
+        ride={ride}
+        setWaitingForDriver={setWaitingForDriver}
+       
+        
         />
       </div>
     </div>

@@ -8,7 +8,7 @@ import ConfirmRidePopUp from "../Components/ConfirmRidePopUp";
 import axios from "axios";
 import {SocketContext} from "../context/SocketContext"
 function CaptainHome() {
-  const [ridePopUpPanel, setRidePopUpPanel] = useState(true);
+  const [ridePopUpPanel, setRidePopUpPanel] = useState(false);
   const ridePopUpPanelRef = useRef(null);
   const [confirmRidePopUpPanel, setConfirmRidePopUpPanel] = useState(false);
   const confirmridePopUpPanelRef = useRef(null);
@@ -16,17 +16,9 @@ function CaptainHome() {
 
   const {socket } =useContext(SocketContext);
   const captainprofile = JSON.parse(localStorage.getItem("captainprofile"));
-
+  const [ride,setRide] = useState(null);
  useEffect(() => {    
   socket.emit("join", {userId:captainprofile.captain._id,userType:"captain"});
- 
-
-  // Geolocation.getCurrentPosition()
-   
-    
- 
- 
-   
   const updateLocation = () => {
     if (navigator.geolocation) {
       
@@ -61,8 +53,11 @@ function CaptainHome() {
 
  socket.on("new-ride", (data) => {
   console.log(data)
-
+  setRide(data);
+ setRidePopUpPanel(true);
  })
+
+
 
 
   useGSAP(
@@ -94,6 +89,22 @@ function CaptainHome() {
     },
     [confirmRidePopUpPanel]
   );
+
+// connfirm ride
+const confirmRide =async () => {
+const response =await axios.post(`${import.meta.env.VITE_BASEURL}/api/ride/confirm`,{
+  rideId:ride._id,
+  captainId:localStorage.getItem("captainProfile.captain._id"),},{
+
+  headers:{
+    Authorization:`Bearer ${localStorage.getItem("captainToken")}`
+  }
+})
+console.log("hi")
+console.log(response.data)
+
+}
+
 
   return (
     <div className="h-screen">
@@ -132,6 +143,8 @@ function CaptainHome() {
         className="fixed w-full z-10 translate-y-full bg-white bottom-0 px-3 py-6 pt-12"
       >
         <RidePopup
+        ride={ride}
+        confirmRide={confirmRide}
           setRidePopUpPanel={setRidePopUpPanel}
           setConfirmRidePopUpPanel={setConfirmRidePopUpPanel}
         />
