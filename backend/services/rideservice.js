@@ -73,7 +73,6 @@ module.exports.createRide = async ({
   destination,
   vehicleType,
 }) => {
-  // Added user to the parameter list
   if (!user || !pickup || !destination || !vehicleType) {
     throw new Error("User, pickup, destination and vehicle type are required");
   }
@@ -89,5 +88,26 @@ module.exports.createRide = async ({
     fare: fare[vehicleType],
   });
 
+  await ride.save(); // Save the ride to the database
+
   return ride;
 };
+
+
+module.exports.confirmRide = async ({ rideId,captain }) => {
+ 
+  if (!rideId) {
+    throw new Error("Ride id is required");
+  }
+
+    await rideModel.findOneAndUpdate({_id: rideId},{status: "Accepted",
+      captain: captain._id
+    });
+    
+  const ride = await rideModel.findOne({
+    _id: rideId,  
+  }).populate("user").populate("captain").select("+otp");
+  await ride.save();
+  
+ return ride
+}
