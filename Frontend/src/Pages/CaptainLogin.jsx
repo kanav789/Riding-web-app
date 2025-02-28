@@ -26,7 +26,8 @@ function CaptainLogin() {
       console.log(response.data);
 
       const data = response.data;
-
+  localStorage.setItem("captainToken", data
+      .token);
       localStorage.setItem("captainprofile", JSON.stringify(data));
       navigate("/");
     } catch (error) {

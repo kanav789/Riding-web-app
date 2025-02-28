@@ -26,6 +26,7 @@ function UserLogin() {
 
       if (response.status === 200) {
         const data = response.data;
+        localStorage.setItem("token", data.token);
 
         localStorage.setItem("userprofile", JSON.stringify(data));
        

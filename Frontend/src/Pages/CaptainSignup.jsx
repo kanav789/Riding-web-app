@@ -37,7 +37,7 @@ function CaptainSignup() {
         formData
       );
       const data = response.data;
-
+      localStorage.setItem("captainToken", data.token);
       localStorage.setItem("captainprofile", JSON.stringify(data));
 
       setFirstname("");
