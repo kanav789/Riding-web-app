@@ -12,6 +12,7 @@ import { SocketContext } from "../context/SocketContext";
 import WaitingForDriver from "../Components/WaitingForDriver";
 import {useNavigate} from "react-router-dom"
 import LiveTracking from "../Components/LiveTracking";
+import logo from '../Assets/OIP.png'
 
 function Home() {
   const [pickup, setPickup] = useState("");
@@ -226,7 +227,7 @@ console.log(user)
     <div className="h-screen w-screen overflow-hidden relative ">
       <img
         className="w-16 absolute top-5 left-5"
-        src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
+        src={logo}
         alt=""
       />
       <div className="h-screen w-screen">

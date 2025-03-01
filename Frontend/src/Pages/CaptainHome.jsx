@@ -1,4 +1,5 @@
 import React, { useContext,useRef, useState, useEffect } from "react";
+import logo from '../Assets/OIP.png'
 import { Link } from "react-router-dom";
 import CaptainDetails from "../Components/CaptainDetails";
 import RidePopup from "../Components/RidePopup";
@@ -111,7 +112,7 @@ console.log(response.data)
       <div className="fixed  p-6 top-0  flex  items-center justify-between w-screen">
         <img
           className="w-16"
-          src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
+          src={logo}
           alt=""
         />
         <Link

@@ -1,5 +1,7 @@
 import { React, useState } from "react";
 import { Link } from "react-router-dom";
+import logo from '../Assets/OIP.png'
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 function CaptainLogin() {
@@ -39,7 +41,7 @@ function CaptainLogin() {
       <div>
         <img
           className="w-16 mb-10"
-          src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
+          src={logo}
           alt=""
         />
         <form onSubmit={SubmitHAndler}>
