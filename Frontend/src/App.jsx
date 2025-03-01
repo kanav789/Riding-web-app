@@ -49,9 +49,9 @@ function App() {
         <Route
           path="/Riding"
           element={
-            // <CaptainProtectedWrapper>
+            <UserProtectedRouters>
             <LiveRiding />
-            // </CaptainProtectedWrapper>
+           </UserProtectedRouters>
           }
         />
 

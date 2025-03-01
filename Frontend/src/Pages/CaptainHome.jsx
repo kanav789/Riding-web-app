@@ -155,7 +155,7 @@ console.log(response.data)
         ref={confirmridePopUpPanelRef}
         className="fixed w-full h-screen z-10 translate-y-full bg-white bottom-0 px-3 py-6 pt-12"
       >
-        <ConfirmRidePopUp setConfirmRidePopUpPanel={setConfirmRidePopUpPanel} />
+        <ConfirmRidePopUp ride={ride} setConfirmRidePopUpPanel={setConfirmRidePopUpPanel} />
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ import axios from "axios";
 import { SocketContext } from "../context/SocketContext";
 
 import WaitingForDriver from "../Components/WaitingForDriver";
-
+import {useNavigate} from "react-router-dom"
 
 function Home() {
   const [pickup, setPickup] = useState("");
@@ -38,6 +38,10 @@ function Home() {
 
   const userStr = localStorage.getItem("userprofile");
   const user = userStr ? JSON.parse(userStr): "user nahi hai bahi";
+
+  const navigate =useNavigate()
+ 
+   
 console.log(user)
   useEffect(() => {
    
@@ -53,6 +57,15 @@ console.log(user)
   setIsLookingForDriver(false)
   setWaitingForDriver(true)
   })
+
+
+  socket.on("ride-started",(data)=>{
+    setWaitingForDriver(false)
+    navigate('/riding',{state:{data}})
+    
+  })
+ 
+   
 
   const handleSubmit = async (e) => {
     e.preventDefault();

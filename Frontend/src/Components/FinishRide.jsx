@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 function FinishRide(props) {
+  console.log(props.ride, "ride");
   return (
     <div>
       <div
@@ -20,7 +21,7 @@ function FinishRide(props) {
             src="https://imgs.search.brave.com/zoqBg0aHx0F5FcJ3IWHTV-hbUpQeDoMFfcL-VTgeiBI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzgyL2Vh/LzQyLzgyZWE0MmEy/ZGZiMDdlODZjYjhj/NTkyYmViMjI4MTI1/LmpwZw"
             alt=""
           />
-          <h2 className="text-lg font-medium ">Harsh Patel</h2>
+          <h2 className="text-lg font-medium ">{props.ride?.user.fullname.firstname}</h2>
         </div>
         <h5 className="font-lg font-medium ">2.2 KM</h5>
       </div>
@@ -31,7 +32,7 @@ function FinishRide(props) {
             <div>
               <h3 className="text-lg font-medium ">562/11-A</h3>
               <p className="text-[14px] text-gray-600 mt-[-2px]">
-                Kankhirya Talab, Ahembdabad
+               {props.ride?.pickup}
               </p>
             </div>
           </div>
@@ -40,14 +41,14 @@ function FinishRide(props) {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-[14px] text-gray-600 mt-[-2px]">
-                Kankhirya Talab, Ahembdabad
+                {props.ride?.destination}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-5 p-3  ">
             <i className="ri-currency-fill"></i>
             <div>
-              <h3 className="text-lg font-medium">₹183.00</h3>
+              <h3 className="text-lg font-medium">₹{props.ride?.fare}.00</h3>
               <p className="text-[14px] text-gray-600 mt-[-2px]">Cash </p>
             </div>
           </div>

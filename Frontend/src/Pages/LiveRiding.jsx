@@ -1,6 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link ,useLocation} from "react-router-dom";
 const LiveRiding = () => {
+  const location= useLocation()
+  const ride =location.state|| {}
+  console.log(ride,"ride")
   return (
     <div className="h-screen">
       <Link
@@ -25,8 +28,8 @@ const LiveRiding = () => {
             alt=""
           />
           <div className="text-right">
-            <h2 className="text-lg font-medium">Kanav</h2>
-            <h4 className="text-xl font-semibold -mt-2 -mb-1">Mp04 AB 1234</h4>
+            <h2 className="text-lg font-medium">{ride?.data.captain.fullname.firstname}</h2>
+            <h4 className="text-xl font-semibold -mt-2 -mb-1">{ride?.data.pickup}</h4>
             <p className="text-sm text-gray-600">Maruti Swift</p>
           </div>
         </div>
@@ -37,14 +40,14 @@ const LiveRiding = () => {
               <div>
                 <h3 className="text-lg font-medium">562/11-A</h3>
                 <p className="text-[14px] text-gray-600 mt-[-2px]">
-                  Kankhirya Talab, Ahembdabad
+                  {ride?.data.destination}
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-5 p-3  ">
               <i className="ri-currency-fill"></i>
               <div>
-                <h3 className="text-lg font-medium">₹183.00</h3>
+                <h3 className="text-lg font-medium">₹{ride?.data.fare}.00</h3>
                 <p className="text-[14px] text-gray-600 mt-[-2px]">Cash </p>
               </div>
             </div>

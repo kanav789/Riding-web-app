@@ -1,9 +1,30 @@
+import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 function ConfirmRidePopUp(props) {
+  const navigate = useNavigate();
   const [otp, setOtp] = useState("");
-  const submitHadnler = (e) => {
+  const submitHadnler = async (e) => {
     e.preventDefault();
+
+    const response = await axios.get(
+      `${import.meta.env.VITE_BASEURL}/api/ride/startRide`,
+      {
+        params: {
+          rideId: props.ride._id,
+          otp: otp,
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("captainToken")}`
+        }
+      }
+    );
+   
+    console.log(response)
+    if(response.status === 200){
+      props.setConfirmRidePopUpPanel(false);
+      navigate('/captain/riding',{state:{ride:props.ride}})
+    }
   };
 
   return (
@@ -69,15 +90,15 @@ function ConfirmRidePopUp(props) {
               onChange={(e) => setOtp(e.target.value)}
               className="bg-[#eee] px-6 py-4 font-mono rounded-lg w-full mt-3"
             />
-            <Link
-              to="/captain/riding"
+            <button
+          
               className="w-full text-lg mt-5 flex justify-center bg-green-600 text-white font-semibold p-2 rounded-lg "
               onClick={() => {
                 props.setConfirmRidePopUpPanel(false);
               }}
             >
               Confirm
-            </Link>
+            </button>
             <button
               className="w-full mt-1 text-lg bg-red-400 text-white font-semibold p-2 rounded-lg "
               onClick={() => {
