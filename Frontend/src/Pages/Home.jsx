@@ -11,6 +11,7 @@ import { SocketContext } from "../context/SocketContext";
 
 import WaitingForDriver from "../Components/WaitingForDriver";
 import {useNavigate} from "react-router-dom"
+import LiveTracking from "../Components/LiveTracking";
 
 function Home() {
   const [pickup, setPickup] = useState("");
@@ -229,11 +230,7 @@ console.log(user)
         alt=""
       />
       <div className="h-screen w-screen">
-        <img
-          className="h-full w-full object-cover"
-          src="https://imgs.search.brave.com/jK1glZ46aRnMBCp3Bqv7YWCuqyKXawBDiB0s1mPwES0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zaW1v/bnBhbi5jb20vd3At/Y29udGVudC90aGVt/ZXMvc3BfcG9ydGZv/bGlvL2Fzc2V0cy91/YmVyLW5vdC1waWNr/dXAuanBn"
-          alt=""
-        />
+        <LiveTracking/>
       </div>
       <div className="flex flex-col justify-end h-screen absolute top-0 w-full  ">
         <div className="h-[30%]  bg-white relative p-5">
