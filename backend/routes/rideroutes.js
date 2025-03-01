@@ -34,10 +34,13 @@ router.get(
   authmidlleware.authuser,
   rideController.getsFares
 );
-
+// ride confirmation
 router.post('/confirm',authmidlleware.authcaptain, body('rideId').isMongoId().withMessage('Invalid ride id'),rideController.confirmRide)
-
+//  ride start 
 router.get('/startride',authmidlleware.authcaptain, query('rideId').isMongoId().withMessage('Invalid ride id'),
 query('otp').isString().isLength({min:6, max:6}).withMessage('Invalid Otp'),rideController.startRide)
  
+ 
+router.post('/endride',authmidlleware.authcaptain, body('rideId').isMongoId().withMessage('Invalid ride id'),rideController.endRide)
+
 module.exports = router;
