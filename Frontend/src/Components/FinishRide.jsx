@@ -1,7 +1,28 @@
+import axios from "axios";
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 function FinishRide(props) {
-  console.log(props.ride, "ride");
+const navigate=useNavigate()
+
+  const endRide = async () => {
+
+    const response =await axios.post(`${import.meta.env.VITE_BASEURL}/api/ride/endRide`,{
+      rideId:props.ride._id
+    },{
+      headers:{
+        Authorization:`Bearer ${localStorage.getItem('captainToken')}`
+      }
+    })
+
+    if(response.status === 200){
+      props.setFinishRidePanel(false) 
+    
+      navigate('/captainhome')
+    }
+
+
+  }
   return (
     <div>
       <div
@@ -55,15 +76,14 @@ function FinishRide(props) {
         </div>
 
         <div className="mt-6 flex flex-col gap-2 w-full">
-          <Link
-            to="/captain/riding"
+          <button
             className="w-full mt-5 flex justify-center bg-green-600 text-white font-semibold p-2 rounded-lg "
             onClick={() => {
-              props.setFinishRidePanel(false);
+             endRide()
             }}
           >
             Finish Ride
-          </Link>
+          </button>
           <p className="text-gray-500 text-sm font-medium text-center">
             Click on finish ride button if you have completed the payment.
           </p>

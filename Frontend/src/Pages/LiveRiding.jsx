@@ -1,9 +1,17 @@
-import React from "react";
-import { Link ,useLocation} from "react-router-dom";
+import {React,useContext,useEffect} from "react";
+import { Link ,useLocation, useNavigate} from "react-router-dom";
+import {SocketContext} from "../context/SocketContext";
 const LiveRiding = () => {
   const location= useLocation()
   const ride =location.state|| {}
-  console.log(ride,"ride")
+  
+  const navigate=useNavigate()
+  const {socket} =useContext(SocketContext)
+  socket.on("ride-completed",(data)=>{
+    navigate('/home',)
+  })
+
+
   return (
     <div className="h-screen">
       <Link
