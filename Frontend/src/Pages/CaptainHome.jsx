@@ -54,7 +54,7 @@ function CaptainHome() {
  
 
  socket.on("new-ride", (data) => {
-  console.log(data)
+
   setRide(data);
  setRidePopUpPanel(true);
  })
@@ -102,8 +102,7 @@ const response =await axios.post(`${import.meta.env.VITE_BASEURL}/api/ride/confi
     Authorization:`Bearer ${localStorage.getItem("captainToken")}`
   }
 })
-console.log("hi")
-console.log(response.data)
+
 
 }
 

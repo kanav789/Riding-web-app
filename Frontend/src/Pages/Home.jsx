@@ -55,7 +55,7 @@ console.log(user)
   socket.on("ride-confirmed",(data)=>{
  
   setride(data)
-  console.log(data,"daaata")
+ 
   setIsLookingForDriver(false)
   setWaitingForDriver(true)
   })
@@ -191,7 +191,7 @@ console.log(user)
 
       setFare(response.data);
 
-      console.log(fare, "fare");
+
     } catch (error) {
       console.log(error);
     }
@@ -214,7 +214,7 @@ console.log(user)
         }
       )
       .then((response) => {
-        console.log(response.data);
+       
         setIsLookingForDriver(true);
         setVehiclepanel(false);
       })
