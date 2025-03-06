@@ -10,7 +10,7 @@ function UserProtectedRouters({ children }) {
     if (!userprofile) {
       navigate("/user-login");
     }
-  });
+  },[]);
 
   return <>{children}</>;
 }

@@ -10,7 +10,7 @@ function CaptainProtectedWrapper({ children }) {
     if (!userprofile) {
       navigate("/captain-login");
     }
-  });
+  },[userprofile, navigate]);
 
   return <>{children}</>;
 }

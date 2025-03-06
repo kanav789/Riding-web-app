@@ -6,6 +6,7 @@ const CaptainLogout = () => {
   const navigate = useNavigate();
   useEffect(() => {
     localStorage.removeItem("captainprofile");
+    localStorage.removeItem("captainToken");
     navigate("/captain-login");
   }, []);
 };
