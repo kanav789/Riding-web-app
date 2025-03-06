@@ -32,7 +32,7 @@ function LoactionSearchPanel({
         }
       )
       .then((res) => {
-        console.log(res.data);
+        
         setSuggestions(res.data || []);
       })
       .catch((error) => {

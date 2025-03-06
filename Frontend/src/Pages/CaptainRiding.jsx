@@ -8,7 +8,7 @@ function CaptainRiding(props) {
   const finishRidePanelRef = useRef(null);
    const location= useLocation();
    const ride =location.state?.ride;
- console.log(ride,"rddd")
+
     
   useGSAP(
     function () {
