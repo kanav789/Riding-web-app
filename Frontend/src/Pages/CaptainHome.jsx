@@ -8,6 +8,7 @@ import gsap from "gsap";
 import ConfirmRidePopUp from "../Components/ConfirmRidePopUp";
 import axios from "axios";
 import {SocketContext} from "../context/SocketContext"
+import LiveTracking from "../Components/LiveTracking";
 function CaptainHome() {
   const [ridePopUpPanel, setRidePopUpPanel] = useState(false);
   const ridePopUpPanelRef = useRef(null);
@@ -91,7 +92,7 @@ function CaptainHome() {
     [confirmRidePopUpPanel]
   );
 
-// connfirm ride
+// confirm ride
 const confirmRide =async () => {
 const response =await axios.post(`${import.meta.env.VITE_BASEURL}/api/ride/confirm`,{
   rideId:ride._id,
@@ -124,11 +125,7 @@ console.log(response.data)
       </div>
 
       <div className="h-3/5">
-        <img
-          className="h-full w-full object-cover"
-          src="https://imgs.search.brave.com/IOOeReERpqAuDpo60Xu2r1XkDZ2m1Q6_1QIGLxJ4ctI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLmlt/Z3VyLmNvbS9xaUVz/bE4wLmdpZg.gif"
-          alt=""
-        />
+     <LiveTracking/>
       </div>
 
       <div className="h-2/5 p-6">

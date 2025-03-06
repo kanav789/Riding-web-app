@@ -25,13 +25,13 @@ function CaptainLogin() {
       );
       setEmail("");
       setPassword("");
-      console.log(response.data);
+    
 
       const data = response.data;
   localStorage.setItem("captainToken", data
       .token);
       localStorage.setItem("captainprofile", JSON.stringify(data));
-      navigate("/");
+      navigate("/captainhome");
     } catch (error) {
       console.log(error);
     }

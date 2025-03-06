@@ -32,11 +32,9 @@ function UserSignup() {
       );
       if (response.status === 200) {
         const data = response.data;
-        localStorage.setItem("token", data.token);
-         
+        localStorage.setItem("token", data.token);         
         localStorage.setItem("userprofile", JSON.stringify(data));
 
-        console.log("user login successfully");
         navigate("/home");
       } else {
         console.log(response.data.msg, "error");

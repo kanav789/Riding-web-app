@@ -30,7 +30,6 @@ function UserLogin() {
 
         localStorage.setItem("userprofile", JSON.stringify(data));
        
-        console.log("user login successfully");
         navigate("/home");
       } else {
         console.log(response, "error");
