@@ -28,7 +28,7 @@ function Start() {
           alt=""
         />
         <div className="bg-white py-4 px-4 pb-7">
-          <h2 className="text-3xl font-bold">Get Started With Uber</h2>
+          <h2 className="text-3xl font-bold">Get Started With Riding App</h2>
           <button
        
             className="flex items-center justify-center w-full bg-black text-white py-3 rounded mt-5"
